@@ -1,5 +1,4 @@
-// const _ = require('lodash/core');
-var _ = require('lodash');
+const _ = require('lodash');
 
 type TUTMData = {
   UTMSource: string,
@@ -30,7 +29,6 @@ type TUTMStore = Record<string, string>;
 
   // Получает утм параметры из строки запроса
   function parseUTM(): TUTMData | null {
-    // console.log(document.location.search);
     const queryString = document.location.search;
 
     // ?utm_source=yandex&utm_medium=cpm&utm_...
@@ -39,18 +37,13 @@ type TUTMStore = Record<string, string>;
     const UTMSource = queryString.match(UTMSourceRE)![0].split('=')[1];
     const UTMParams = queryString.match(UTMParamsRE)!.splice(1);
 
-    // console.log(UTMSource);
-    // console.log(UTMParams);
-
     if (UTMSource) {
-      console.log('Получены утм метки');
       return {
         UTMSource,
         UTMParams,
       };
     }
 
-    console.log('Утм меток нет');
     return null
   }
 
@@ -98,8 +91,6 @@ type TUTMStore = Record<string, string>;
       const newData = createRecord(UTMData);
       writeStore(newData);
     }
-
-    console.log(store);
   }
 
   // Если пришли утм метки, складываем их в хранилище
