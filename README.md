@@ -8,7 +8,7 @@
 
 ## Демо
 
-[Открыть демонстрацию](https://vanyapr.github.io/utm-to-localstorage/)
+[Открыть демонстрацию](https://vanyapr.github.io/utm-to-localstorage/http://localhost:9000/?utm_source=github&utm_medium=cpm&utm_something=cpm_45)
 
 ## Задача
 Есть необходимость сохранять утм метки в браузере пользователя, чтобы потом сабмитить их вместе с заказами, и на их
@@ -22,16 +22,16 @@ const store = localStorage.getItem('utm-history');
 // Хранилища представляет собой объект
 // UTM метка: ?utm_source=yandex&utm_medium=cpm
 exampleStore = {
-  'utm_source': {
-    'yandex': { // utm_source=yandex
+  utm_source: {
+    yandex: { // utm_source=yandex
         utm_medium: {
-          'cpm': {
+          cpm: {
             dates: [
               '1248405595591',
               '1648055955919',
             ],
           },
-          'test': { // utm_source=test
+          test: { // utm_source=test
             dates: [
               '1248405595591',
               '1648055955919',

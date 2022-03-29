@@ -32,16 +32,18 @@ type TUTMStore = Record<string, string>;
     const queryString = document.location.search;
 
     // ?utm_source=yandex&utm_medium=cpm&utm_...
-    const UTMSourceRE = /utm_source=[a-zA-Z_0-9]+/gim;
-    const UTMParamsRE = /utm_[a-zA-Z_]+=[a-zA-Z_0-9]+/gim;
-    const UTMSource = queryString.match(UTMSourceRE)![0].split('=')[1];
-    const UTMParams = queryString.match(UTMParamsRE)!.splice(1);
+    if (queryString) {
+      const UTMSourceRE = /utm_source=[a-zA-Z_0-9]+/gim;
+      const UTMParamsRE = /utm_[a-zA-Z_]+=[a-zA-Z_0-9]+/gim;
+      const UTMSource = queryString.match(UTMSourceRE)![0].split('=')[1];
+      const UTMParams = queryString.match(UTMParamsRE)!.splice(1);
 
-    if (UTMSource) {
-      return {
-        UTMSource,
-        UTMParams,
-      };
+      if (UTMSource) {
+        return {
+          UTMSource,
+          UTMParams,
+        };
+      }
     }
 
     return null
@@ -68,13 +70,11 @@ type TUTMStore = Record<string, string>;
       return acc;
     }, {})
 
-    const record = {
+    return {
       'utm_source': {
         [UTMSource]: values
       }
-    }
-
-    return record;
+    };
   }
 
   // Вносит данные в стор
