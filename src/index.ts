@@ -58,15 +58,16 @@ type TUTMStore = Record<string, string>;
   // Создает новую запись
   function createRecord(data: TUTMData) {
     const { UTMSource, UTMParams } = data;
-    const date = Date.now();
 
     const values = UTMParams.reduce((acc: Record<string, any>, param: string) => {
       const [key, value] = param.split('=');
+
       acc[key] = {
         [value]: {
-          dates: [date],
+          dates: [Date.now().toString()],
         }
       };
+
       return acc;
     }, {})
 
