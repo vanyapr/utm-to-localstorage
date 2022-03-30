@@ -1,4 +1,4 @@
-const { mergeWith } = require('lodash');
+import { mergeWith } from 'lodash';
 
 type TUTMData = {
   UTMSource: string,
@@ -50,7 +50,7 @@ type TUTMStore = Record<string, string>;
   }
 
   function mergeCustomizer(objValue: any, srcValue: any) {
-    if (_.isArray(objValue)) {
+    if (Array.isArray(objValue)) {
       return objValue.concat(srcValue);
     }
   }
