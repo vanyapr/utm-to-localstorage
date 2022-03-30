@@ -1,5 +1,3 @@
-import { mergeWith } from 'lodash';
-
 type TUTMData = {
   UTMSource: string,
   UTMParams: string[]
@@ -49,10 +47,29 @@ type TUTMStore = Record<string, string>;
     return null
   }
 
-  function mergeCustomizer(objValue: any, srcValue: any) {
-    if (Array.isArray(objValue)) {
-      return objValue.concat(srcValue);
+  function mergeObjects(lhs: any, rhs: any) {
+    if (lhs && Object.keys(lhs) && Object.keys(lhs).length === 0) {
+      lhs = rhs;
+    } else {
+      for (let key in rhs) {
+        if (rhs[key].constructor === Object) {
+          // Если объект
+          if (lhs[key]) {
+            lhs[key] = mergeObjects(lhs[key], rhs[key]);
+          } else {
+            lhs[key] = rhs[key];
+          }
+        } else if (rhs[key].constructor === Array) {
+          // Если у нас массив
+          lhs[key] = lhs[key].concat(rhs[key]);
+        } else {
+          // Если значение
+          lhs[key] = rhs[key];
+        }
+      }
     }
+
+    return lhs;
   }
 
   // Создает новую запись
@@ -81,7 +98,7 @@ type TUTMStore = Record<string, string>;
   // Вносит данные в стор
   function writeStore(data: Record<string, any>) {
     // Сливаем существующий стор с полученным объектом
-    mergeWith(store, data, mergeCustomizer)
+    store = mergeObjects(store, data)
     localStorage.setItem(utmStoreName, JSON.stringify(store))
   }
 
