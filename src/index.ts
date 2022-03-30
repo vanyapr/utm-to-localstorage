@@ -44,28 +44,24 @@ type TUTMStore = Record<string, string>;
       }
     }
 
-    return null
+    return null;
   }
 
   function mergeObjects(lhs: any, rhs: any) {
-    if (lhs && Object.keys(lhs) && Object.keys(lhs).length === 0) {
-      lhs = rhs;
-    } else {
-      for (let key in rhs) {
-        if (rhs[key].constructor === Object) {
-          // Если объект
-          if (lhs[key]) {
-            lhs[key] = mergeObjects(lhs[key], rhs[key]);
-          } else {
-            lhs[key] = rhs[key];
-          }
-        } else if (rhs[key].constructor === Array) {
-          // Если у нас массив
-          lhs[key] = lhs[key].concat(rhs[key]);
+    for (let key in rhs) {
+      if (rhs[key].constructor === Object) {
+        // Если объект
+        if (lhs[key]) {
+          lhs[key] = mergeObjects(lhs[key], rhs[key]);
         } else {
-          // Если значение
           lhs[key] = rhs[key];
         }
+      } else if (rhs[key].constructor === Array) {
+        // Если у нас массив
+        lhs[key] = lhs[key].concat(rhs[key]);
+      } else {
+        // Если значение
+        lhs[key] = rhs[key];
       }
     }
 
@@ -74,19 +70,23 @@ type TUTMStore = Record<string, string>;
 
   // Создает новую запись
   function createRecord(data: TUTMData) {
-    const { UTMSource, UTMParams } = data;
+    const {
+      UTMSource,
+      UTMParams
+    } = data;
 
     const values = UTMParams.reduce((acc: Record<string, any>, param: string) => {
       const [key, value] = param.split('=');
 
       acc[key] = {
         [value]: {
-          dates: [Date.now().toString()],
+          dates: [Date.now()
+            .toString()],
         }
       };
 
       return acc;
-    }, {})
+    }, {});
 
     return {
       'utm_source': {
@@ -98,8 +98,8 @@ type TUTMStore = Record<string, string>;
   // Вносит данные в стор
   function writeStore(data: Record<string, any>) {
     // Сливаем существующий стор с полученным объектом
-    store = mergeObjects(store, data)
-    localStorage.setItem(utmStoreName, JSON.stringify(store))
+    store = mergeObjects(store, data);
+    localStorage.setItem(utmStoreName, JSON.stringify(store));
   }
 
   function onDocumentLoad() {
@@ -114,4 +114,3 @@ type TUTMStore = Record<string, string>;
   // Если пришли утм метки, складываем их в хранилище
   document.addEventListener('DOMContentLoaded', onDocumentLoad);
 })();
-
