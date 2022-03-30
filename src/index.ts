@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const { mergeWith } = require('lodash');
 
 type TUTMData = {
   UTMSource: string,
@@ -81,7 +81,7 @@ type TUTMStore = Record<string, string>;
   // Вносит данные в стор
   function writeStore(data: Record<string, any>) {
     // Сливаем существующий стор с полученным объектом
-    _.mergeWith(  store, data, mergeCustomizer)
+    mergeWith(store, data, mergeCustomizer)
     localStorage.setItem(utmStoreName, JSON.stringify(store))
   }
 
